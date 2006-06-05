@@ -2,12 +2,13 @@ Summary:	Simple Python bootloader config lib
 Summary(pl):	Prosta biblioteka Pythona do konfiguracji bootloadera
 Name:		python-booty
 Version:	0.71
-Release:	0.3
+Release:	0.4
 License:	LGPL
 Group:		Libraries
 Source0:	booty-%{version}.tar.bz2
 # Source0-md5:	50dd1a34e60c3191d4898cef90f45319
 Patch0:		%{name}-menu.lst.patch
+Patch1:		%{name}-pld.patch
 BuildRequires:	python-devel
 BuildRequires:	rpmbuild(macros) >= 1.234
 Requires:	python-rhpl >= 0.176-1.1
@@ -25,6 +26,7 @@ anacondê i up2date.
 %prep
 %setup -q -n booty-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__make} \
