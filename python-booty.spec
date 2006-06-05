@@ -2,7 +2,7 @@ Summary:	Simple Python bootloader config lib
 Summary(pl):	Prosta biblioteka Pythona do konfiguracji bootloadera
 Name:		python-booty
 Version:	0.71
-Release:	0.4
+Release:	0.6
 License:	LGPL
 Group:		Libraries
 Source0:	booty-%{version}.tar.bz2
@@ -53,4 +53,9 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch %{ix86}
 %attr(755,root,root) %{_libdir}/booty/eddmodule.so
 %endif
-%{_libdir}/booty/*.py[co]
+%{_libdir}/booty/bootloaderInfo.py[co]
+%{_libdir}/booty/booty.py[co]
+%{_libdir}/booty/butil.py[co]
+%{_libdir}/booty/checkbootloader.py[co]
+%{_libdir}/booty/grubupdatetest.py[co]
+%{_libdir}/booty/lilo.py[co]
