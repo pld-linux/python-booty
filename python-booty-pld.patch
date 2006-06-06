@@ -1,6 +1,6 @@
 --- booty-0.71/butil.py	2006-06-06 02:01:46.891108363 +0300
 +++ booty-0.71/butil.py	2006-06-06 21:45:21.801103636 +0300
-@@ -151,15 +151,16 @@
+@@ -151,15 +151,15 @@
  
  # returns a product name to use for the boot loader string
  def getProductName():
@@ -18,11 +18,10 @@
              if relidx != -1:
 -                return buf[:relidx]
 +                return buf[relidx:-1]
-+        return lines[0][:-1]
  
      if os.access("/tmp/product/.buildstamp", os.R_OK):
          path = "/tmp/product/.buildstamp"
-@@ -177,5 +178,5 @@
+@@ -177,5 +177,5 @@
  
      # fall back
 -    return "Red Hat Linux"
