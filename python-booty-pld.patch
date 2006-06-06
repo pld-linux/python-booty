@@ -1,6 +1,6 @@
---- booty-0.71/butil.py	2006-06-06 01:53:52.720489440 +0300
-+++ booty-0.71/butil.py	2006-06-06 02:01:46.891108363 +0300
-@@ -151,15 +151,12 @@
+--- booty-0.71/butil.py	2006-06-06 02:01:46.891108363 +0300
++++ booty-0.71/butil.py	2006-06-06 21:45:21.801103636 +0300
+@@ -151,15 +151,16 @@
  
  # returns a product name to use for the boot loader string
  def getProductName():
@@ -12,15 +12,17 @@
 +        f = open("/etc/pld-release", "r")
          lines = f.readlines()
          f.close()
--        for buf in lines:
+         for buf in lines:
 -            relidx = buf.find(" release")
--            if relidx != -1:
++            relidx = buf.find("PLD Linux")
+             if relidx != -1:
 -                return buf[:relidx]
-+        return lines[0]
++                return buf[relidx:-1]
++        return lines[0][:-1]
  
      if os.access("/tmp/product/.buildstamp", os.R_OK):
          path = "/tmp/product/.buildstamp"
-@@ -177,5 +174,5 @@
+@@ -177,5 +178,5 @@
  
      # fall back
 -    return "Red Hat Linux"
