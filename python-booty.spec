@@ -1,5 +1,5 @@
 Summary:	Simple Python bootloader config lib
-Summary(pl):	Prosta biblioteka Pythona do konfiguracji bootloadera
+Summary(pl.UTF-8):   Prosta biblioteka Pythona do konfiguracji bootloadera
 Name:		python-booty
 Version:	0.71
 Release:	1
@@ -19,9 +19,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Small Python library for use with bootloader configuration by anaconda
 and up2date.
 
-%description -l pl
-Prosta biblioteka Pythona do konfiguracji bootloadera u¿ywana przez
-anacondê i up2date.
+%description -l pl.UTF-8
+Prosta biblioteka Pythona do konfiguracji bootloadera uÅ¼ywana przez
+anacondÄ™ i up2date.
 
 %prep
 %setup -q -n booty-%{version}
