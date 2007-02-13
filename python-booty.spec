@@ -1,5 +1,5 @@
 Summary:	Simple Python bootloader config lib
-Summary(pl.UTF-8):   Prosta biblioteka Pythona do konfiguracji bootloadera
+Summary(pl.UTF-8):	Prosta biblioteka Pythona do konfiguracji bootloadera
 Name:		python-booty
 Version:	0.71
 Release:	1
