@@ -1,6 +1,6 @@
---- booty-0.71/bootloaderInfo.py	2006-03-14 23:18:45.000000000 +0200
-+++ booty-0.71.pld/bootloaderInfo.py	2006-05-24 23:53:01.340281681 +0300
-@@ -696,7 +696,7 @@
+--- booty-0.93/bootloaderInfo.py~	2007-12-14 15:25:30.000000000 +0100
++++ booty-0.93/bootloaderInfo.py	2007-12-14 15:27:46.301475773 +0100
+@@ -710,7 +710,7 @@
  
          # XXX old config file should be read here for upgrade
  
@@ -9,7 +9,7 @@
          self.perms = 0600
          if os.access (instRoot + cf, os.R_OK):
              self.perms = os.stat(instRoot + cf)[0] & 0777
-@@ -853,7 +853,7 @@
+@@ -867,7 +867,7 @@
              usedDevs[device] = 1
  
          f.close()
@@ -18,7 +18,7 @@
  
          try:
              # make symlink for menu.lst (default config file name)
-@@ -869,7 +869,7 @@
+@@ -883,7 +883,7 @@
              if os.access (instRoot + "/etc/grub.conf", os.R_OK):
                  os.rename(instRoot + "/etc/grub.conf",
                            instRoot + "/etc/grub.conf.rpmsave")
@@ -27,7 +27,16 @@
          except:
              pass
         
-@@ -1050,7 +1050,7 @@
+@@ -947,7 +947,7 @@
+             if target == "partition":
+                 stage1Target = self.grubbyPartitionName(gtPart)
+ 
+-            cmd += "install %s%s/stage1 d %s %s/stage2 p %s%s/grub.conf" % \
++            cmd += "install %s%s/stage1 d %s %s/stage2 p %s%s/menu.lst" % \
+                 (args, grubPath, stage1Target, grubPath, bPart, grubPath)
+             cmds.append(cmd)
+             
+@@ -1065,7 +1065,7 @@
  
          theDev = None
          for (fn, stanza) in [ ("/etc/sysconfig/grub", "boot="),
@@ -36,34 +45,12 @@
              try:
                  f = open(instRoot + fn, "r")
              except:
-@@ -1172,7 +1172,7 @@
-             for device in cdrw:
-                 torem.append("%s=ide-scsi" %(device,))
-                 
--            for fn in ("/etc/lilo.conf", "/boot/grub/grub.conf",
-+            for fn in ("/etc/lilo.conf", "/boot/grub/menu.lst",
-                        "/etc/lilo.conf.anaconda"):
-                 if not os.path.exists(instRoot + fn):
-                     continue
---- booty-0.71/booty.py	2005-06-29 22:36:39.000000000 +0300
-+++ booty-0.71.pld/booty.py	2006-05-24 23:50:52.627395309 +0300
-@@ -106,7 +106,7 @@
- 
- 
-     if not filename:
--        filename = "/boot/grub/grub.conf"
-+        filename = "/boot/grub/menu.lst"
-     
- 
-     defaultImage = getGrubDefault()
---- booty-0.71/checkbootloader.py	2005-06-29 22:36:39.000000000 +0300
-+++ booty-0.71.pld/checkbootloader.py	2006-05-24 23:51:02.397614410 +0300
-@@ -18,7 +18,7 @@
- import os
- import string
- 
--grubConfigFile = "/boot/grub/grub.conf"
-+grubConfigFile = "/boot/grub/menu.lst"
- liloConfigFile = "/etc/lilo.conf"
- yabootConfigFile = "/etc/yaboot.conf"
- siloConfigFile = "/etc/silo.conf"
+@@ -1138,7 +1138,7 @@
+                     break
+                     
+             args = "--stage2=/boot/grub/stage2 "
+-            cmd ="root %s\ninstall %s%s/stage1 d %s %s/stage2 p %s%s/grub.conf"\
++            cmd ="root %s\ninstall %s%s/stage1 d %s %s/stage2 p %s%s/menu.lst"\
+                 % (grubbyRootPart, args, grubPath, grubbyStage1Dev,
+                    grubPath, grubbyRootPart, grubPath)
+         
