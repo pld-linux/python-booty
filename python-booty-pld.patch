@@ -1,5 +1,25 @@
 --- booty-0.93/bootloaderInfo.py~	2007-12-07 19:19:40.000000000 +0100
 +++ booty-0.93/bootloaderInfo.py	2007-12-14 15:24:12.816148293 +0100
+@@ -337,9 +337,7 @@
+             initrd = booty.makeInitrd (kernelTag, instRoot)
+ 
+             sl.addEntry("label", label)
+-            if os.access (instRoot + initrd, os.R_OK):
+-                sl.addEntry("initrd", "%sinitrd%s.img" %(self.kernelLocation,
+-                                                         kernelTag))
++            sl.addEntry("initrd", initrd)
+                 
+             sl.addEntry("read-only")
+ 
+@@ -760,7 +758,7 @@
+         f.write('#          root %s\n' % self.grubbyPartitionName(bootDevs[0]))
+         f.write("#          kernel %svmlinuz-version ro "
+                 "root=/dev/%s\n" % (cfPath, rootDev))
+-        f.write("#          initrd %sinitrd-version.img\n" % (cfPath))
++        f.write("#          initrd %sinitrd-version.gz\n" % (cfPath))
+         f.write("#boot=/dev/%s\n" % (grubTarget))
+ 
+         # get the default image to boot... we have to walk and find it
 @@ -2071,12 +2071,12 @@
  # FIXME: this is based on the stuff from anaconda, but kind of crappy :-/
  def getProductName():
