@@ -24,3 +24,24 @@
 +    return "PLD Linux"
          
              
+--- booty-0.93/booty.py~	2007-12-07 19:19:40.000000000 +0100
++++ booty-0.93/booty.py	2008-08-31 00:01:20.375418616 +0200
+@@ -194,9 +194,6 @@
+         
+         initrd = makeInitrd("-%s" % (newVersion,), "/")
+ 
+-        if not os.access(initrd, os.R_OK):
+-            initrd = None
+-
+         if imageType and imageType != defaultType:
+             # linux-smp.linux-BOOT, etc
+             label = "linux-"+imageType
+@@ -276,7 +273,7 @@
+     if rhpl.getArch() == 'ia64':
+         initrd = "/boot/efi/EFI/redhat/initrd%s.img" % (kernelTag, )
+     else:
+-        initrd = "/boot/initrd%s.img" % (kernelTag, )
++        initrd = "/boot/initrd%s.gz" % (kernelTag, )
+ 
+     return initrd
+ 
