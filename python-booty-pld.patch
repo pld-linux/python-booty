@@ -20,6 +20,105 @@
          f.write("#boot=/dev/%s\n" % (grubTarget))
  
          # get the default image to boot... we have to walk and find it
+@@ -843,16 +843,14 @@
+                     f.write(' %s' % self.args.get())
+                 f.write('\n')
+ 
+-                if os.access (instRoot + initrd, os.R_OK):
+-                    f.write('\tmodule %sinitrd%s.img\n' % (cfPath, kernelTag))
++                f.write('\tmodule %sinitrd%s.gz\n' % (cfPath, kernelTag))
+             else: # normal kernel
+                 f.write('\tkernel %s ro%s' % (kernelFile, realroot))
+                 if self.args.get():
+                     f.write(' %s' % self.args.get())
+                 f.write('\n')
+ 
+-                if os.access (instRoot + initrd, os.R_OK):
+-                    f.write('\tinitrd %sinitrd%s.img\n' % (cfPath, kernelTag))
++                f.write('\tinitrd %sinitrd%s.gz\n' % (cfPath, kernelTag))
+ 
+         for (label, longlabel, device) in chainList:
+             if ((not longlabel) or (longlabel == "")):
+@@ -1260,9 +1258,8 @@
+             initrd = booty.makeInitrd (kernelTag, instRoot)
+ 
+             sl.addEntry("label", label)
+-            if os.access (instRoot + initrd, os.R_OK):
+-                sl.addEntry("initrd",
+-                            "%sinitrd%s.img" %(self.kernelLocation, kernelTag))
++            sl.addEntry("initrd",
++                        "%sinitrd%s.gz" %(self.kernelLocation, kernelTag))
+ 
+             sl.addEntry("read-only")
+             sl.addEntry("root", '/dev/' + rootDev)
+@@ -1356,9 +1353,8 @@
+             initrd = booty.makeInitrd (kernelTag, instRoot)
+             f.write('[%s]\n' % (label))
+             f.write('\timage=%s\n' % (kernelFile))
+-            if os.access (instRoot + initrd, os.R_OK):
+-                f.write('\tramdisk=%sinitrd%s.img\n' %(self.kernelLocation,
+-                                                     kernelTag))
++            f.write('\tramdisk=%sinitrd%s.gz\n' %(self.kernelLocation,
++                                                 kernelTag))
+             realroot = getRootDevName(initrd, fsset, rootDev, instRoot)
+             f.write('\tparameters="root=%s' %(realroot,))
+             if bl.args.get():
+@@ -1484,8 +1480,7 @@
+ 
+             # See if we can come up with an initrd argument that exists
+             initrd = booty.makeInitrd (kernelTag, instRoot)
+-            if os.access(instRoot + initrd, os.R_OK):
+-                f.write(" initrd=%sinitrd-%s.img" %(kernelPath, kernelTag))
++            f.write(" initrd=%sinitrd-%s.gz" %(kernelPath, kernelTag))
+ 
+             realroot = getRootDevName(initrd, fsset, rootDevice, instRoot)
+             f.write(" root=%s" %(realroot,))
+@@ -1671,8 +1666,7 @@
+             f.write("\tread-only\n")
+ 
+             initrd = booty.makeInitrd(kernelTag, instRoot)
+-            if os.access(instRoot + initrd, os.R_OK):
+-                f.write("\tinitrd=%s/initrd%s.img\n" %(cfPath,kernelTag))
++            f.write("\tinitrd=%s/initrd%s.gz\n" %(cfPath,kernelTag))
+ 
+             append = "%s" %(self.args.get(),)
+ 
+@@ -1776,7 +1770,7 @@
+         # write our command line files
+         for (kernel, tag, kernelTag) in kernelList:
+             cmdFile = "%scmdline-%s" %(self.kernelLocation, kernelTag)
+-            initrd = "%sinitrd-%s.img" %(self.kernelLocation, kernelTag)
++            initrd = "%sinitrd-%s.gz" %(self.kernelLocation, kernelTag)
+             realroot = getRootDevName(initrd, fsset, rootDevice, instRoot)
+             f = open(instRoot + cmdFile, "w")
+             f.write("ro root=%s" %(realroot,))
+@@ -1872,13 +1866,13 @@
+             # path for live cd only
+             shutil.copy("%s/boot/vmlinuz-%s" %(instRoot, version),
+                         "%s/boot/isolinux/vmlinuz" %(instRoot,))
+-            shutil.copy("%s/boot/initrd-%s.img" %(instRoot, version),
+-                        "%s/boot/isolinux/initrd.img" %(instRoot,))
++            shutil.copy("%s/boot/initrd-%s.gz" %(instRoot, version),
++                        "%s/boot/isolinux/initrd.gz" %(instRoot,))
+             
+             # FIXME: need to dtrt for xen kernels with multiboot com32 module
+             f.write("label linux\n")
+             f.write("\tkernel vmlinuz\n")
+-            f.write("\tappend initrd=initrd.img,initlive.gz\n")
++            f.write("\tappend initrd=initrd.gz,initlive.gz\n")
+             f.write("\n")
+ 
+             break
+@@ -1947,8 +1941,7 @@
+             f.write("\tread-only\n")
+ 
+             initrd = booty.makeInitrd(kernelTag, instRoot)
+-            if os.access(instRoot + initrd, os.R_OK):
+-                f.write("\tinitrd=%s/initrd%s.img\n" % (cfPath, kernelTag))
++            f.write("\tinitrd=%s/initrd%s.gz\n" % (cfPath, kernelTag))
+ 
+             append = "%s" % (self.args.get(),)
+ 
 @@ -2071,12 +2071,12 @@
  # FIXME: this is based on the stuff from anaconda, but kind of crappy :-/
  def getProductName():
