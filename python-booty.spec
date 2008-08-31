@@ -5,6 +5,7 @@ Version:	0.93
 Release:	4
 License:	LGPL
 Group:		Libraries
+# https://fedorahosted.org/releases/b/o/booty/ (not yet)
 Source0:	booty-%{version}.tar.bz2
 # Source0-md5:	e0dff87df9a94378ed6a4b5291edaaf7
 Patch0:		%{name}-menu.lst.patch
