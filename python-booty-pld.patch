@@ -1,5 +1,5 @@
---- booty-0.93/bootloaderInfo.py~	2007-12-07 19:19:40.000000000 +0100
-+++ booty-0.93/bootloaderInfo.py	2007-12-14 15:24:12.816148293 +0100
+--- booty-0.93/bootloaderInfo.py	2007-12-07 20:19:40.000000000 +0200
++++ booty-0.93-pld/bootloaderInfo.py	2008-11-09 21:34:43.408407835 +0200
 @@ -337,9 +337,7 @@
              initrd = booty.makeInitrd (kernelTag, instRoot)
  
@@ -20,7 +20,7 @@
          f.write("#boot=/dev/%s\n" % (grubTarget))
  
          # get the default image to boot... we have to walk and find it
-@@ -843,16 +843,14 @@
+@@ -845,16 +843,14 @@
                      f.write(' %s' % self.args.get())
                  f.write('\n')
  
@@ -39,7 +39,7 @@
  
          for (label, longlabel, device) in chainList:
              if ((not longlabel) or (longlabel == "")):
-@@ -1260,9 +1258,8 @@
+@@ -1262,9 +1258,8 @@
              initrd = booty.makeInitrd (kernelTag, instRoot)
  
              sl.addEntry("label", label)
@@ -51,7 +51,7 @@
  
              sl.addEntry("read-only")
              sl.addEntry("root", '/dev/' + rootDev)
-@@ -1356,9 +1353,8 @@
+@@ -1358,9 +1353,8 @@
              initrd = booty.makeInitrd (kernelTag, instRoot)
              f.write('[%s]\n' % (label))
              f.write('\timage=%s\n' % (kernelFile))
@@ -63,7 +63,7 @@
              realroot = getRootDevName(initrd, fsset, rootDev, instRoot)
              f.write('\tparameters="root=%s' %(realroot,))
              if bl.args.get():
-@@ -1484,8 +1480,7 @@
+@@ -1486,8 +1480,7 @@
  
              # See if we can come up with an initrd argument that exists
              initrd = booty.makeInitrd (kernelTag, instRoot)
@@ -73,7 +73,7 @@
  
              realroot = getRootDevName(initrd, fsset, rootDevice, instRoot)
              f.write(" root=%s" %(realroot,))
-@@ -1671,8 +1666,7 @@
+@@ -1673,8 +1666,7 @@
              f.write("\tread-only\n")
  
              initrd = booty.makeInitrd(kernelTag, instRoot)
@@ -83,7 +83,7 @@
  
              append = "%s" %(self.args.get(),)
  
-@@ -1776,7 +1770,7 @@
+@@ -1778,7 +1770,7 @@
          # write our command line files
          for (kernel, tag, kernelTag) in kernelList:
              cmdFile = "%scmdline-%s" %(self.kernelLocation, kernelTag)
@@ -92,7 +92,7 @@
              realroot = getRootDevName(initrd, fsset, rootDevice, instRoot)
              f = open(instRoot + cmdFile, "w")
              f.write("ro root=%s" %(realroot,))
-@@ -1872,13 +1866,13 @@
+@@ -1874,13 +1866,13 @@
              # path for live cd only
              shutil.copy("%s/boot/vmlinuz-%s" %(instRoot, version),
                          "%s/boot/isolinux/vmlinuz" %(instRoot,))
@@ -109,7 +109,7 @@
              f.write("\n")
  
              break
-@@ -1947,8 +1941,7 @@
+@@ -1949,8 +1941,7 @@
              f.write("\tread-only\n")
  
              initrd = booty.makeInitrd(kernelTag, instRoot)
@@ -119,12 +119,14 @@
  
              append = "%s" % (self.args.get(),)
  
-@@ -2071,12 +2071,12 @@
+@@ -2070,15 +2061,17 @@
+ # returns a product name to use for the boot loader string
  # FIXME: this is based on the stuff from anaconda, but kind of crappy :-/
  def getProductName():
-     # try redhat-release first
+-    # try redhat-release first
 -    if os.access("/etc/redhat-release", os.R_OK):
 -        f = open("/etc/redhat-release", "r")
++    # try pld-release first
 +    if os.access("/etc/pld-release", os.R_OK):
 +        f = open("/etc/pld-release", "r")
          lines = f.readlines()
@@ -133,9 +135,14 @@
 -            relidx = buf.find(" release")
 +            relidx = buf.find("PLD Linux")
              if relidx != -1:
-                 return buf[:relidx]
+-                return buf[:relidx]
++                # return 'PLD Linux (Ac)'
++                # return 'PLD Linux (Th)'
++                return buf[relidx:-1]
  
-@@ -2095,6 +2095,6 @@
+     if os.access("/tmp/product/.buildstamp", os.R_OK):
+         path = "/tmp/product/.buildstamp"
+@@ -2095,6 +2088,6 @@
              return lines[1][:-1]
  
      # fall back
@@ -143,8 +150,8 @@
 +    return "PLD Linux"
          
              
---- booty-0.93/booty.py~	2007-12-07 19:19:40.000000000 +0100
-+++ booty-0.93/booty.py	2008-08-31 00:01:20.375418616 +0200
+--- booty-0.93/booty.py	2007-12-07 20:19:40.000000000 +0200
++++ booty-0.93-pld/booty.py	2008-11-09 21:34:43.408407835 +0200
 @@ -194,9 +194,6 @@
          
          initrd = makeInitrd("-%s" % (newVersion,), "/")
