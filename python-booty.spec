@@ -2,7 +2,7 @@ Summary:	Simple Python bootloader config lib
 Summary(pl.UTF-8):	Prosta biblioteka Pythona do konfiguracji bootloadera
 Name:		python-booty
 Version:	0.93
-Release:	4
+Release:	5
 License:	LGPL
 Group:		Libraries
 # https://fedorahosted.org/releases/b/o/booty/ (not yet)
@@ -26,7 +26,7 @@ anacondę i up2date.
 
 %prep
 %setup -q -n booty-%{version}
-#%patch0 -p1
+%patch0 -p1
 %patch1 -p1
 
 %build
