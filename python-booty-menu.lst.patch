@@ -18,6 +18,14 @@
  
          try:
              # make symlink for menu.lst (default config file name)
+@@ -870,7 +870,6 @@
+             if os.access (instRoot + "/boot/grub/menu.lst", os.R_OK):
+                 os.rename(instRoot + "/boot/grub/menu.lst",
+                           instRoot + "/boot/grub/menu.lst.rpmsave")
+-            os.symlink("./grub.conf", instRoot + "/boot/grub/menu.lst")
+         except:
+             pass
+ 
 @@ -883,7 +883,7 @@
              if os.access (instRoot + "/etc/grub.conf", os.R_OK):
                  os.rename(instRoot + "/etc/grub.conf",
