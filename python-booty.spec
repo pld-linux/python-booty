@@ -14,6 +14,7 @@ BuildRequires:	python-devel
 BuildRequires:	rpmbuild(macros) >= 1.234
 Requires:	python-rhpl >= 0.176-1.1
 %pyrequires_eq	python-libs
+BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -31,18 +32,16 @@ anacondę i up2date.
 
 %build
 %{__make} \
-	CC="%{__cc}" \
-	CFLAGS='%{rpmcflags} -fPIC -Wall -I$(PYTHONINCLUDE)' \
-	PYTHONLIBDIR=%{_libdir}/booty
+	PYTHONLIBDIR=%{py_sitescriptdir}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	PYTHONLIBDIR=%{_libdir}/booty
+	PYTHONLIBDIR=%{py_sitescriptdir}
 
-%py_postclean %{_libdir}/booty
+%py_postclean
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -50,9 +49,4 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README TODO
-%dir %{_libdir}/booty
-%{_libdir}/booty/bootloaderInfo.py[co]
-%{_libdir}/booty/booty.py[co]
-%{_libdir}/booty/checkbootloader.py[co]
-%{_libdir}/booty/grubupdatetest.py[co]
-%{_libdir}/booty/lilo.py[co]
+%{py_sitescriptdir}/*.py[co]
